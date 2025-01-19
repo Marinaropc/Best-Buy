@@ -20,10 +20,29 @@ def user_input():
 
 
 def start(best_buy):
-    """ Displays a list of all products in the store."""
+    """ Displays a menu and handles user input."""
+    dispatch = {
+        "1": lambda: list_products(best_buy),
+        "2": lambda: show_total_quantity(best_buy),
+        "3": lambda: make_order(best_buy),
+        "4": quit_program
+    }
+
+    while True:
+        user_choice = user_input()
+        if user_choice in dispatch:
+            dispatch[user_choice]()
+            if user_choice == "4":
+                break
+        else:
+            print("Invalid input. Please try again.")
+
     print(f"Here is the list of products in the store:\n")
 
-    for item in best_buy.get_all_products():
+
+def list_products(best_buy):
+    """ Displays a list of all products in the store."""
+    for item in best_buy.get_active_products():
         print(item.show())
 
     print("-----")
@@ -60,7 +79,7 @@ def make_order(best_buy):
         try:
             integer_product = int(product_number)
             product_index = integer_product - 1
-            product = best_buy.get_all_products()[product_index]
+            product = best_buy.get_active_products()[product_index]
         except (ValueError, IndexError):
             print("Please enter one of the displayed index number.")
             continue
@@ -98,22 +117,7 @@ def quit_program():
 def main():
     """ Main function that displays and handles user interface"""
     best_buy = store.Store(product_list)
-    dispatch = {
-        "1": lambda: start(best_buy),
-        "2": lambda: show_total_quantity(best_buy),
-        "3": lambda: make_order(best_buy),
-        "4": quit_program
-    }
-
-    while True:
-        user_choice = user_input()
-        if user_choice in dispatch:
-            dispatch[user_choice]()
-            if user_choice == "4":
-                break
-        else:
-            print("Invalid input. Please try again.")
-
+    start(best_buy)
 
 if __name__ == '__main__':
     main()

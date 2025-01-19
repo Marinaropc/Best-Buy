@@ -1,4 +1,3 @@
-import products
 
 class Store:
 
@@ -39,6 +38,18 @@ class Store:
         return total_quantity
 
 
+    def get_active_products(self):
+        """ Returns a list of active products in the store.
+        Returns:
+            list: List of active products in the store.
+        """
+        active_products = []
+        for product in self.products:
+            if product.is_active():
+                active_products.append(product)
+        return active_products
+
+
     def get_all_products(self):
         """ Returns a list of all products in the store.
         Returns:
@@ -46,8 +57,8 @@ class Store:
         """
         return self.products
 
-
-    def order(self, shopping_list):
+    @staticmethod
+    def order(shopping_list):
         """ Orders the products in the shopping list.
         Args:
             shopping_list (list): List of products to order.
